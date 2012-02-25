@@ -126,7 +126,7 @@ Page curling is a combination of a parameterized transformation approximating a 
 \subsection{Two-Sided Textures}
 A single mesh is used for each page, which has a different texture for each side. To determine the correct texture for a given fragment, a normal vector is passed for each vertex.
 
-Singe each page is a parameterized plane, the vertex shader can calculate the position of vertices a small \delta in either direction.
+Singe each page is a parameterized plane, the vertex shader can calculate the position of vertices a small $\delta$ in either direction.
 
 The normal vector is passed to the fragment shader, which determines if the normal is facing toward or away from the camera and picks the appropriate texture.
 \subsection{Queueing}
