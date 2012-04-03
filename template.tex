@@ -18,6 +18,7 @@
 
 \usepackage[scaled=.92]{helvet}
 \usepackage{times}
+\usepackage{url}
 
 %% The 'graphicx' package allows for the inclusion of EPS figures.
 
@@ -61,8 +62,8 @@
 \begin{document}
 
 \teaser{
-  \includegraphics[width=1.5in]{sample.eps}
-  \caption{Lookit! Lookit!}
+  \includegraphics[width=1.5in]{pageturn.png}
+  \caption{WebGL page turning in Chrome 18 for OS X.}
 }
 
 %% The ``\maketitle'' command must be the first command after the
@@ -74,39 +75,20 @@
 
 \begin{abstract}
 
-Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse
-molestie consequat, vel illum dolore eu feugiat nulla facilisis at 
-vero eros et accumsan et iusto odio dignissim qui blandit praesent
-luptatum zzril delenit augue duis dolore te feugait nulla
-facilisi. Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna
-aliquam erat volutpat.
-
-Citations can be done this way~\cite{Jobs95} or this more concise 
-way~\shortcite{Jobs95}, depending upon the application.
-
-Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem
-vel eum iriure dolor in hendrerit~\cite{Pellacini:2005:LAH}
-in vulputate velit esse molestie~\cite{notes2002} 
-consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et
-accumsan et iusto odio dignissim qui blandit praesent luptatum zzril
-delenit augue duis dolore te feugait nulla facilisi.~\cite{Park:2006:DSI}
-
 \end{abstract}
 
 %% ACM Computing Review (CR) categories. 
 %% See <http://www.acm.org/class/1998/> for details.
 %% The ``\CRcat'' command takes four arguments.
 
-\begin{CRcatlist}
-  \CRcat{K.6.1}{Management of Computing and Information Systems}%
-{Project and People Management}{Life Cycle};
-  \CRcat{K.7.m}{The Computing Profession}{Miscellaneous}{Ethics}
-\end{CRcatlist}
+%\begin{CRcatlist}
+%  \CRcat{K.6.1}{Management of Computing and Information Systems}%
+%{Project and People Management}{Life Cycle};
+%  \CRcat{K.7.m}{The Computing Profession}{Miscellaneous}{Ethics}
+%\end{CRcatlist}
 
 %% The ``\keywordlist'' command prints out the keywords.
-\keywordlist
+%\keywordlist
 
 \section{Introduction}
 
@@ -115,13 +97,20 @@ delenit augue duis dolore te feugait nulla facilisi.~\cite{Park:2006:DSI}
 %% copyright space is left at the bottom of the first column on the first
 %% page of your paper.
 
-%% \copyrightspace
+ \copyrightspace
 
-Our application implements the page turning algorithm specified by [1].
+Our application implements the page turning algorithm specified by \cite{Lichan-Hong:2004fk} and implemented in OpenGL by \cite{Nuon:uq}.
 
-\section{Exposition}
+
+\section{Implementation}
 \subsection{Page Curling}
 Page curling is a combination of a parameterized transformation approximating a cone  of varying width and position and a rotation about the y-axis.
+
+The shape and position of the cone varies in three phases to simulate the severe curling that occurs at the start, more flat turning in the middle, and finally the wobble of settling onto the resting state. the attributes of the cone are calculated in Javascript then passed to WebGL shaders as uniforms.
+
+The vertex shader calculates its projection onto the cone as a function of its two-dimensional position on the page's plane. 
+
+
 
 \subsection{Two-Sided Textures}
 A single mesh is used for each page, which has a different texture for each side. To determine the correct texture for a given fragment, a normal vector is passed for each vertex.
@@ -129,29 +118,13 @@ A single mesh is used for each page, which has a different texture for each side
 Singe each page is a parameterized plane, the vertex shader can calculate the position of vertices a small $\delta$ in either direction.
 
 The normal vector is passed to the fragment shader, which determines if the normal is facing toward or away from the camera and picks the appropriate texture.
-\subsection{Queueing}
-Pages sit in a stack on either side of the active turning page, and are raised into the turning position as needed.
-\begin{equation}
- \sum_{j=1}^{z} j = \frac{z(z+1)}{2}
-\end{equation}
-
-\begin{eqnarray}
-x & \ll & y_{1} + \cdots + y_{n} \\
-  & \leq & z
-\end{eqnarray}
-
-\begin{figure*}[ht]
-\centering
-\includegraphics[width=2.5in]{sample.eps}
-\caption{Sample illustration.}
-\end{figure*}
+%\subsection{Queueing}
+%Pages sit in a stack on either side of the active turning page, and are raised into the turning position as needed.
 
 
 \section{Conclusion}
 
 WebGL offers a powerful environment for 3D presentation on the web. While libraries such as three.js can offer significant advantages, implementation can still be challenging. 
-\section*{Acknowledgements}
-
 
 \bibliographystyle{acmsiggraph}
 \nocite{*}
